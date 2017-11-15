@@ -5,6 +5,28 @@
 
 hintImage(){
   wordPic.src = this.image
-  wordPic.style.opacity = 
+  wordPic.style.opacity =
 }
 }
+
+
+
+function fetchWord(wordsUrl,level) {
+   fetch(wordsUrl)
+   .then(res => res.json())
+   .then(objects => {
+     // the above objects were originally json variable.
+     objects.filter(elem, function(){
+	      return elem.level_id === level
+      })
+    })
+    .then(objects => {
+     wordObj = objects[Math.floor(Math.random() * objects.length)]
+
+
+
+     hiddenWord = new HiddenWord(wordObj);
+
+     censorWord(hiddenWord.display());
+   })
+ }
