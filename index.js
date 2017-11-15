@@ -1,7 +1,8 @@
 document.addEventListener('DOMContentLoaded', function(){
   displayImg();
   addLetterListener();
-  fetchWord('http://localhost:3000/api/v1/words');
+  dropDownListener();
+  // fetchWord('http://localhost:3000/api/v1/words');
 })
 const wordsUrl = 'http://localhost:3000/api/v1/words';
 const letterForm = document.getElementById("letter_form")
@@ -9,7 +10,7 @@ const letterInputField = document.getElementById('letter_input');
 let word;
 let hiddenWord;
 let wordPic = document.getElementById('word_pic')
-
+let dropDown = document.getElementById('level_section');
 
 const img1 = 'https://image.ibb.co/fLhRVw/Screen_Shot_2017_11_14_at_1_14_13_PM.png';
 const img2 = 'https://image.ibb.co/kdtBxb/Screen_Shot_2017_11_14_at_1_14_06_PM.png';
@@ -40,16 +41,29 @@ function fetchWord(wordsUrl) {
    .then(res => res.json())
    .then(objects => {
      // the above objects were originally json variable.
-     wordObj = objects[Math.floor(Math.random() * objects.length)]
+     //debugger
+    let filtered =  objects.filter(function(elem){
+    	return elem.level_id === parseInt(document.getElementById('level_section').value)
+
+      //debugger;
+    })
+     wordObj = filtered[Math.floor(Math.random() * filtered.length)]
 
 
 
      hiddenWord = new HiddenWord(wordObj);
-     
+
      censorWord(hiddenWord.display());
    })
  }
 
 function censorWord(word) {
   document.getElementById("censored").innerText = word;
+}
+
+function dropDownListener() {
+  levelNum = parseInt(document.getElementById('level_section').value)
+  dropDown.addEventListener("change", function(ev){
+    fetchWord('http://localhost:3000/api/v1/words', levelNum)
+  })
 }
