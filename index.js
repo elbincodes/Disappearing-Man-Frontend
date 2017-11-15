@@ -8,6 +8,8 @@ const letterForm = document.getElementById("letter_form")
 const letterInputField = document.getElementById('letter_input');
 let word;
 let hiddenWord;
+let wordPic = document.getElementById('word_pic')
+
 
 const img1 = 'https://image.ibb.co/fLhRVw/Screen_Shot_2017_11_14_at_1_14_13_PM.png';
 const img2 = 'https://image.ibb.co/kdtBxb/Screen_Shot_2017_11_14_at_1_14_06_PM.png';
@@ -29,6 +31,7 @@ const addLetterListener = () => {
     hiddenWord.addGuess(letterInputField.value.toLowerCase())
     censorWord(hiddenWord.display());
     document.forms["letter_form"].reset();
+    hiddenWord.hintImage();
   });
 }
 
@@ -38,7 +41,11 @@ function fetchWord(wordsUrl) {
    .then(objects => {
      // the above objects were originally json variable.
      wordObj = objects[Math.floor(Math.random() * objects.length)]
+
+
+
      hiddenWord = new HiddenWord(wordObj);
+     
      censorWord(hiddenWord.display());
    })
  }

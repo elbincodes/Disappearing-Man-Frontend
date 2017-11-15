@@ -15,6 +15,7 @@ class HiddenWord {
       this.counter += 1;
       this.incorrectGuesses.push(letter)//
       document.getElementById("dpman_image").src = `${imgArr[this.counter]}`;
+      console.log(this.counter)
     }
   }
 
@@ -27,5 +28,12 @@ class HiddenWord {
         return '#'
       }
     }).join('')
+  }
+
+
+  hintImage(){
+    wordPic.src = this.image
+    // wordPic.style.opacity = (.1).toString()
+    wordPic.style.opacity = (((this.counter) + 1)/15).toString()
   }
 }
