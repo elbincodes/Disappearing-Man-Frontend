@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', function(){
   displayImg();
   addLetterListener();
   dropDownListener();
+  newWordListener()
   // fetchWord('http://localhost:3000/api/v1/words');
 })
 const wordsUrl = 'http://localhost:3000/api/v1/words';
@@ -65,5 +66,56 @@ function dropDownListener() {
   levelNum = parseInt(document.getElementById('level_section').value)
   dropDown.addEventListener("change", function(ev){
     fetchWord('http://localhost:3000/api/v1/words', levelNum)
+  })
+}
+
+function newWordListener() {
+  let postForm = document.getElementById('post_form')
+  postForm.addEventListener("submit", function(ev){
+    //debugger
+    ev.preventDefault()
+
+
+    postWord()
+    document.forms["post_form"].reset();
+  })
+}
+
+function wordLevelFunc(word){
+
+ let lengthNum = word.length;
+
+ if (lengthNum <= 5){
+   return 1;
+ }
+ else if (lengthNum <= 9){
+   return 2;
+ }else{
+   return 3;
+ }
+
+}
+
+ function winnerOption() {
+  if (!(document.getElementById('censored').innerHTML).includes('#')){
+    console.log("test no hash")
+  }
+}
+
+const postWord = () => {
+  // debugger
+  const body = {
+    name: document.getElementById("word_input").value,
+    url: document.getElementById("url_input").value,
+    level_id: wordLevelFunc(document.getElementById("word_input").value)
+      // refacot this above function call.
+}
+  const headers = {
+    'Accept': 'application/json', 'Content-Type': 'application/json'
+  }
+  fetch('http://localhost:3000/api/v1/words', {
+    method: 'POST',
+    body: JSON.stringify(body),
+    headers: headers
   })
 }
