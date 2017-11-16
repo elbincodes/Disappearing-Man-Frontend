@@ -5,35 +5,35 @@ class HiddenWord {
     this.guesses = []
     this.image = wordObj.url
     this.counter = 0
-    this.incorrectGuesses = []//
+    this.incorrectGuesses = []
   }
 
   addGuess(letter) {
-    this.guesses.push(letter)
-    document.getElementById("all_guesses").innerHTML = `YOUR PREVIOUS GUESSES:  ${this.guesses.join(', ')}`
+    this.guesses.push(letter);
+    document.getElementById("all_guesses").innerHTML = `YOUR PREVIOUS GUESSES:  ${this.guesses.join(', ')}`;
     if (!this.name.includes(letter)) {
       this.counter += 1;
-      this.incorrectGuesses.push(letter)//
+      this.incorrectGuesses.push(letter);
       document.getElementById("dpman_image").src = `${imgArr[this.counter]}`;
-      console.log(this.counter)
+    }
+    if (this.counter === 6) {
+      setTimeout(function() { alert("Thanks for playing!"); }, 3000);
+      setTimeout(function() { location.reload(); }, 3000);
     }
   }
-
 
   display() {
     return this.name.split('').map(char => {
       if (this.guesses.includes(char)){
-        return char
+        return char;
       } else {
-        return '#'
+        return '#';
       }
     }).join('')
   }
 
-
   hintImage(){
-    wordPic.src = this.image
-    // wordPic.style.opacity = (.1).toString()
-    wordPic.style.opacity = (((this.counter) + 1)/15).toString()
+    wordPic.src = this.image;
+    wordPic.style.opacity = (((this.counter) + 1)/25).toString();
   }
 }

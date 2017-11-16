@@ -31,18 +31,19 @@
     <div>
       <img src="" id="word_pic">
     </div>
-
-    <form id="letter_form">
-      <input id="letter_input" type="text" name="letter" placeholder="Guess a letter"/>
-      <input id="x"type="submit" value="Submit"/>
-    </form>
+    
     <div id="word_to_guess">
       <h2 id="censored"></h2>
     </div>
 
+    <form id="letter_form">
+      <!-- <input id="letter_input" type="text" name="letter" placeholder="Guess a letter"/> -->
+      <input id="letter_input" type="text" name="letter" onkeydown="limit(this);" onkeyup="limit(this);" placeholder="Guess a letter"/>
+      <input id="x"type="submit" value="Submit"/>
+    </form>
+
     <div id="post_req_area">
 
-      
     </div>
 
     <script type="text/javascript" src='index.js'></script>

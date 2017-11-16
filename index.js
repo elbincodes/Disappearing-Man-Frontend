@@ -2,9 +2,8 @@ document.addEventListener('DOMContentLoaded', function(){
   displayImg();
   addLetterListener();
   dropDownListener();
-  newWordListener()
-  // fetchWord('http://localhost:3000/api/v1/words');
 })
+
 const wordsUrl = 'http://localhost:3000/api/v1/words';
 const letterForm = document.getElementById("letter_form")
 const letterInputField = document.getElementById('letter_input');
@@ -27,11 +26,22 @@ const displayImg = () => {
   document.getElementById("dpman_image").src = imgArr[0];
 }
 
+function limit(element) {
+  if (element.value.length > 1) {
+    element.value = element.value.slice(0, 1);
+    return element.value;
+  } else {
+    return element.value;
+  }
+}
+
 const addLetterListener = () => {
   letterForm.addEventListener("submit", function(ev){
     ev.preventDefault();
-    hiddenWord.addGuess(letterInputField.value.toLowerCase())
+    let newChar = limit(letterInputField);
+    hiddenWord.addGuess(newChar.toLowerCase());
     censorWord(hiddenWord.display());
+    winnerOption();
     document.forms["letter_form"].reset();
     hiddenWord.hintImage();
   });
@@ -42,18 +52,11 @@ function fetchWord(wordsUrl) {
    .then(res => res.json())
    .then(objects => {
      // the above objects were originally json variable.
-     //debugger
     let filtered =  objects.filter(function(elem){
     	return elem.level_id === parseInt(document.getElementById('level_section').value)
-
-      //debugger;
     })
      wordObj = filtered[Math.floor(Math.random() * filtered.length)]
-
-
-
      hiddenWord = new HiddenWord(wordObj);
-
      censorWord(hiddenWord.display());
    })
  }
@@ -70,45 +73,42 @@ function dropDownListener() {
 }
 
 function newWordListener() {
-  let postForm = document.getElementById('post_form')
+  let postForm = document.getElementById('post_form');
   postForm.addEventListener("submit", function(ev){
-    //debugger
-    ev.preventDefault()
-
-
-    postWord()
+    ev.preventDefault();
+    postWord();
     document.forms["post_form"].reset();
   })
+
 }
 
 function wordLevelFunc(word){
-
  let lengthNum = word.length;
 
  if (lengthNum <= 5){
    return 1;
- }
- else if (lengthNum <= 9){
+ } else if (lengthNum <= 9){
    return 2;
- }else{
+ } else {
    return 3;
  }
-
 }
 
  function winnerOption() {
-  if (!(document.getElementById('censored').innerHTML).includes('#')){
-    console.log("test no hash")
+  if (!(document.getElementById('censored').innerHTML).includes('#')) {
+    const tag = document.getElementById('post_req_area')
+    const node = `<form id="post_form"><h5>Congrats on winning!</h5>Please add a new word: <br><input id="word_input" type="text" name="word_input" placeholder="NEW WORD"/> <br>Please add an Image URL that has a picture of your word in it:<br><input id="url_input" type="text" name="url_input" placeholder="NEW IMAGE URL"/><br><input type="submit" value="Submit"/></form>`
+    tag.innerHTML = node
+    newWordListener()
   }
 }
 
 const postWord = () => {
-  // debugger
   const body = {
-    name: document.getElementById("word_input").value,
+    name: document.getElementById("word_input").value.toLowerCase(),
     url: document.getElementById("url_input").value,
     level_id: wordLevelFunc(document.getElementById("word_input").value)
-      // refacot this above function call.
+      // refactor this above function call.
 }
   const headers = {
     'Accept': 'application/json', 'Content-Type': 'application/json'
@@ -117,5 +117,8 @@ const postWord = () => {
     method: 'POST',
     body: JSON.stringify(body),
     headers: headers
-  })
+  }).then(
+    alert("Congrats! Your word has been added to the game!"),
+    location.reload()
+  )
 }
