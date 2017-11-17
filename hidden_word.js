@@ -34,6 +34,8 @@ class HiddenWord {
 
   hintImage(){
     wordPic.src = this.image;
-    wordPic.style.opacity = (((this.counter) + 1)/25).toString();
+    wordPic.height = "100";
+    wordPic.width = "100";
+    wordPic.style.opacity = (((this.counter) + 1)/30).toString();
   }
 }
