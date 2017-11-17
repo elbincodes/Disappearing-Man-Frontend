@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function(){
   dropDownListener();
 })
 
-const wordsUrl = 'http://localhost:3000/api/v1/words';
+const wordsUrl = 'http://shielded-sands-96735.herokuapp.com/api/v1/words';
 const letterForm = document.getElementById("letter_form")
 const letterInputField = document.getElementById('letter_input');
 let word;
@@ -68,7 +68,7 @@ function censorWord(word) {
 function dropDownListener() {
   levelNum = parseInt(document.getElementById('level_section').value)
   dropDown.addEventListener("change", function(ev){
-    fetchWord('http://localhost:3000/api/v1/words', levelNum)
+    fetchWord('http://shielded-sands-96735.herokuapp.com/api/v1/words', levelNum)
   })
 }
 
@@ -113,7 +113,7 @@ const postWord = () => {
   const headers = {
     'Accept': 'application/json', 'Content-Type': 'application/json'
   }
-  fetch('http://localhost:3000/api/v1/words', {
+  fetch('http://shielded-sands-96735.herokuapp.com/api/v1/words', {
     method: 'POST',
     body: JSON.stringify(body),
     headers: headers
